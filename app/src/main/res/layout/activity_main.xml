@@ -4,15 +4,55 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:background="@drawable/background">
+
+    <Button
+        android:id="@+id/mapBtn"
+        android:layout_width="165dp"
+        android:layout_height="42dp"
+        android:background="@drawable/button"
+        android:fontFamily="@font/bold"
+        android:text="@string/maps"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.934"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView"
+        app:layout_constraintVertical_bias="0.578"
+        tools:ignore="InvalidId" />
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
+        android:id="@+id/textView"
+        android:layout_width="367dp"
+        android:layout_height="28dp"
+        android:text="@string/hi_welcome_to_bus_tracker"
+        android:textColor="@color/black"
+        android:textSize="25sp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.636"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.886" />
+
+    <Button
+        android:id="@+id/loginBtn"
+        android:layout_width="171dp"
+        android:layout_height="42dp"
+        android:background="@drawable/button"
+        android:fontFamily="@font/bold"
+        android:text="@string/login"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.066"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView"
+        app:layout_constraintVertical_bias="0.578"
+        tools:ignore="InvalidId" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

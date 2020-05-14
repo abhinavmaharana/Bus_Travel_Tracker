@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "812624024292",
+    "firebase_url": "https://bus-travel-tracker.firebaseio.com",
+    "project_id": "bus-travel-tracker",
+    "storage_bucket": "bus-travel-tracker.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:812624024292:android:2d666f8b3c3b27efe392f1",
+        "android_client_info": {
+          "package_name": "com.example.bus_travel_tracker"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "812624024292-rg40pp741pr85os64jdk671lvudce7rr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC8I8xoHOlZvRpVmAWZooKAb1QYCfSieRA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "812624024292-rg40pp741pr85os64jdk671lvudce7rr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
