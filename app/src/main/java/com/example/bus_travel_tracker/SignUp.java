@@ -58,6 +58,7 @@ public class SignUp extends AppCompatActivity implements
      * @param email
      * @param password
      */
+    //registering user
     public void registerNewEmail(final String email, String password){
 
         showDialog();

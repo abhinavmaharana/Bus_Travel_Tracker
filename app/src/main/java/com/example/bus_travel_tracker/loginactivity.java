@@ -63,7 +63,7 @@ public class loginactivity extends AppCompatActivity {
 
 
     }
-
+    //sAuthentication of user through firebase.
     private void setupFirebaseAuth() {
         Log.d(TAG, "setupFirebaseAuth: started.");
 
