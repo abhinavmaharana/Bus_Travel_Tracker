@@ -1,7 +1,17 @@
 package com.example.bus_travel_tracker;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 class MyAdapter extends ArrayAdapter<String> {
 
     Context context;
@@ -15,7 +25,22 @@ class MyAdapter extends ArrayAdapter<String> {
         this.rTitle = title;
         this.rDescription = description;
         this.rImgs = imgs;
-
     }
+
+    @NonNull
+    @Override
+    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+        LayoutInflater layoutInflater = (LayoutInflater) context.getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        @SuppressLint("ViewHolder") View row = layoutInflater.inflate(R.layout.row, parent, false);
+        ImageView images = row.findViewById(R.id.image);
+        TextView myTitle = row.findViewById(R.id.textView1);
+        TextView myDescription = row.findViewById(R.id.textView2);
+        // now set our resources on views
+        images.setImageResource(rImgs[position]);
+        myTitle.setText(rTitle[position]);
+        myDescription.setText(rDescription[position]);
+        return row;
+    }
+
 
 }

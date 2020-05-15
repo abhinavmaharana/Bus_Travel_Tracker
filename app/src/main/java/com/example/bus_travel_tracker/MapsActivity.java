@@ -1,5 +1,7 @@
 package com.example.bus_travel_tracker;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
@@ -11,10 +13,15 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdate;
@@ -24,28 +31,42 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.Dot;
+import com.google.android.gms.maps.model.Gap;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PatternItem;
 import com.google.android.gms.maps.model.Polygon;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback,GoogleMap.OnPolylineClickListener,
         GoogleMap.OnPolygonClickListener {
 
+    private static final String TAG = "MapsActivity" ;
     private GoogleMap mMap;
     private final double CHENNAI_LAT= 12.823080;
     private final double CHENNAI_LNG= 80.041004;
     public static final int DEFAULT_ZOOM = 15;
+    private static final PatternItem DOT = new Dot();
+    private static final int PATTERN_GAP_LENGTH_PX = 20;
+    private static final PatternItem GAP = new Gap(PATTERN_GAP_LENGTH_PX);
+    private static final List<PatternItem> PATTERN_POLYLINE_DOTTED = Arrays.asList(GAP, DOT);
     private FirebaseFirestore mBusLocation;
+    private Polyline polyline;
 
     ListView listView;
     String mTitle[] = {"Bus Stop 1", "Bus Stop 2", "Bus Stop 3", "Bus Stop 4", "Bus Stop 5"};
@@ -62,6 +83,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     LatLng buspoint5 = new LatLng(12.821124, 80.037832);
     String s1[], s2[];
     private double lat,lng;
+    ImageView backButton2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +93,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+
+        backButton2 = findViewById(R.id.backBtn2);
+
+        backButton2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
         //for Restricting google map to certain area
         //Restricting to a specific location
@@ -102,6 +134,28 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         bus.put("Time", new Timestamp(new Date()));
         listView = findViewById(R.id.listView);
 
+        ArrayList<Object> busLocation = new ArrayList<>();
+        final LatLng busA1 = new LatLng(12.822989, 80.043880);
+        Collections.addAll(busLocation,busA1);
+        bus.put("busLocation",busLocation);
+
+        mBusLocation.collection("BusRoutes").document("BusStatus")
+                .set(bus)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(TAG, "DocumentSnapshot successfully written!");
+                        mMap.addMarker(new MarkerOptions().position(busA1).title("BusA1").icon(bitmapDescriptorFromVector(getApplicationContext(),R.drawable.ic_airport_shuttle_black_24dp)));
+                        mMap.moveCamera(CameraUpdateFactory.newLatLng(busA1));
+
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error writing document", e);
+                    }
+                });
 
         // created an adapter class
         MyAdapter adapter = new MyAdapter(this, mTitle, mDescription, images);
@@ -129,6 +183,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 }
             }
         });
+
 
 
 
@@ -222,8 +277,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public void onPolygonClick(Polygon polygon) {
+        if ((polyline.getPattern() == null) || (!polyline.getPattern().contains(DOT))) {
+            polyline.setPattern(PATTERN_POLYLINE_DOTTED);
+        } else {
+            // The default pattern is a solid stroke.
+            polyline.setPattern(null);
+        }
 
-
+        Toast.makeText(this, "Route type " + polyline.getTag().toString(),
+                Toast.LENGTH_SHORT).show();
     }
 
     @Override
